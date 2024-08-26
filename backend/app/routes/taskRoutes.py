@@ -15,6 +15,7 @@ router = APIRouter(tags=["Tasks"], prefix="/tasks")
 @router.get(
     "/", status_code=status.HTTP_200_OK, response_model=List[taskSchema.TaskResponse]
 )
+@limiter.limit("30/minute")
 #! Retrieve All Tasks
 def get_tasks(
     db: Session = Depends(get_db), current_user: Session = Depends(get_current_user)
@@ -62,6 +63,7 @@ def create_task(
 @router.get(
     "/{id}", status_code=status.HTTP_200_OK, response_model=taskSchema.TaskResponse
 )
+@limiter.limit("30/minute")
 #! Retrieve One Task By ID
 def get_task(
     id: int,
@@ -90,6 +92,7 @@ def get_task(
 
 
 @router.delete("/delete/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("30/minute")
 #! Delete Task By ID
 def delete_task(
     id: int,
@@ -125,6 +128,7 @@ def delete_task(
     status_code=status.HTTP_200_OK,
     response_model=taskSchema.TaskResponse,
 )
+@limiter.limit("30/minute")
 #! Update Task By ID
 def update_task(
     task: taskSchema.UpdateTask,
